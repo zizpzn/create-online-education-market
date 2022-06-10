@@ -28,6 +28,7 @@ app.use(morgan("dev"));
 fs.readdirSync("./routes").map((element) => {
   app.use("/api", require(`./routes/${element}`));
 });
+// app.use("/api", require("./routes/auth"));
 
 // port
 const port = process.env.PORT || 8000;
