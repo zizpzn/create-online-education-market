@@ -42,7 +42,7 @@ const Provider = ({ children }) => {
       // to trigger
       return response;
     },
-    function (err) {
+    function (error) {
       // any status codes that falls outside the range of 2XX cause this function
       // to trigger
       let res = error.response;
@@ -66,6 +66,15 @@ const Provider = ({ children }) => {
       return Promise.reject(error);
     }
   );
+
+  useEffect(() => {
+    const getCsrfToken = async () => {
+      const { data } = await axios.get("/api/csrf-token");
+      console.log("CSRF", data);
+      axios.defaults.headers["X-CSRF-Token"] = data.getCsrfToken;
+    };
+    getCsrfToken();
+  }, []);
 
   return (
     <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
