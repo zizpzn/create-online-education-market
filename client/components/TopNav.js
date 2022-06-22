@@ -4,6 +4,7 @@ import { Menu } from "antd";
 import Link from "next/link";
 import {
   AppstoreOutlined,
+  CoffeeOutlined,
   LoginOutlined,
   LogoutOutlined,
   UserAddOutlined,
@@ -13,12 +14,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 
-const { Item } = Menu;
+const { Item, SubMenu } = Menu;
 
 const TopNav = () => {
   const [current, setCurrent] = useState("");
 
   const { state, dispatch } = useContext(Context);
+  const { user } = state;
 
   const router = useRouter();
 
@@ -49,33 +51,49 @@ const TopNav = () => {
         </Link>
       </Item>
 
-      <Item
-        key="/login"
-        onClick={(event) => {
-          setCurrent(event.key);
-        }}
-        icon={<LoginOutlined />}
-      >
-        <Link href="/login">
-          <a>Login</a>
-        </Link>
-      </Item>
+      {user === null && (
+        <>
+          <Item
+            key="/login"
+            onClick={(event) => {
+              setCurrent(event.key);
+            }}
+            icon={<LoginOutlined />}
+          >
+            <Link href="/login">
+              <a>Login</a>
+            </Link>
+          </Item>
 
-      <Item
-        key="/register"
-        onClick={(event) => {
-          setCurrent(event.key);
-        }}
-        icon={<UserAddOutlined />}
-      >
-        <Link href="/register">
-          <a>Register</a>
-        </Link>
-      </Item>
+          <Item
+            key="/register"
+            onClick={(event) => {
+              setCurrent(event.key);
+            }}
+            icon={<UserAddOutlined />}
+          >
+            <Link href="/register">
+              <a>Register</a>
+            </Link>
+          </Item>
+        </>
+      )}
 
-      <Item onClick={logout} icon={<LogoutOutlined />} className="float-right">
-        Logout
-      </Item>
+      {user !== null && (
+        <SubMenu
+          icon={<CoffeeOutlined />}
+          title={user && user.name}
+          className="float-right"
+        >
+          <Item
+            onClick={logout}
+            icon={<LogoutOutlined />}
+            className="float-right"
+          >
+            Logout
+          </Item>
+        </SubMenu>
+      )}
     </Menu>
   );
 };
