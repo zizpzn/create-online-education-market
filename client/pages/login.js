@@ -26,7 +26,7 @@ const Login = () => {
     }
   }, [user]);
 
-  console.log("STATE", state);
+  // console.log("STATE", state);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

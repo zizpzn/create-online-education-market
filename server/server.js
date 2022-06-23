@@ -1,12 +1,14 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import fs from "fs";
 import mongoose from "mongoose";
 import csrf from "csurf";
 import cookieParser from "cookie-parser";
+import morgan from "morgan";
 
-const morgan = require("morgan");
-require("dotenv").config();
+// const morgan = require("morgan");
+// require("dotenv").config();
 
 const csrfProtection = csrf({ cookie: true });
 
