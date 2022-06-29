@@ -34,7 +34,7 @@ const ForgotPassword = () => {
     try {
       setLoading(true);
       const { data } = await axios.post("/api/forgot-password", { email });
-      setSeccess(true);
+      setSeccess(false);
       toast("Check your email for the secret code");
     } catch (err) {
       setLoading(false);
