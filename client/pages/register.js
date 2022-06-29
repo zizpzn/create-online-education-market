@@ -24,7 +24,7 @@ const Register = () => {
     }
   }, [user]);
 
-  console.log("TESTING ENV", process.env.NEXT_PUBLIC_API);
+  // console.log("TESTING ENV", process.env.NEXT_PUBLIC_API);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -38,6 +38,9 @@ const Register = () => {
       });
       // console.log("REGISTER RESPONSE", data);
       toast.success("Registration seccessful.");
+      setName("");
+      setEmail("");
+      setPassword("");
       setLoading(false);
     } catch (err) {
       toast.error(err.response.data);

@@ -60,6 +60,7 @@ const ForgotPassword = () => {
       setCode("");
       setNewPassword("");
       setLoading(false);
+      toast("Success! Now you can login with new password");
     } catch (err) {
       setLoading(false);
       toast(err.response.data);
