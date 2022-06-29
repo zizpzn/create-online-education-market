@@ -9,10 +9,10 @@ import { useRouter } from "next/router";
 const ForgotPassword = () => {
   // state
   const [email, setEmail] = useState("");
-  const [seccess, setSeccess] = useState("");
+  const [success, setSuccess] = useState(false);
   const [code, setCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // context
   const {
@@ -34,8 +34,32 @@ const ForgotPassword = () => {
     try {
       setLoading(true);
       const { data } = await axios.post("/api/forgot-password", { email });
-      setSeccess(false);
+      setSuccess(true);
       toast("Check your email for the secret code");
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      toast(err.response.data);
+    }
+  };
+
+  const handleResetPassword = async (event) => {
+    event.preventDefault();
+    // console.log(email, code, newPassword);
+    // return;
+
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/api/reset-password", {
+        email,
+        code,
+        newPassword,
+      });
+
+      setEmail("");
+      setCode("");
+      setNewPassword("");
+      setLoading(false);
     } catch (err) {
       setLoading(false);
       toast(err.response.data);
@@ -49,7 +73,7 @@ const ForgotPassword = () => {
       </h1>
 
       <div className="container col-md-4 offset-md-4 pb-5">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={success ? handleResetPassword : handleSubmit}>
           <input
             type="email"
             className="form-control mb-4 p-3"
@@ -57,9 +81,35 @@ const ForgotPassword = () => {
             onChange={(event) => {
               setEmail(event.target.value);
             }}
-            placeholder="Enter your Email"
+            placeholder="Enter Email"
             required
           />
+          {success && (
+            <>
+              <input
+                type="text"
+                className="form-control mb-4 p-3"
+                value={code}
+                onChange={(event) => {
+                  setCode(event.target.value);
+                }}
+                placeholder="Enter secret code"
+                required
+              />
+
+              <input
+                type="password"
+                className="form-control mb-4 p-3"
+                value={newPassword}
+                onChange={(event) => {
+                  setNewPassword(event.target.value);
+                }}
+                placeholder="Enter new password"
+                required
+              />
+            </>
+          )}
+
           <button
             type="submit"
             className="btn btn-primary btn-block p-2"
